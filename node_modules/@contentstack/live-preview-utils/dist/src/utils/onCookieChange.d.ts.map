@@ -1,0 +1,1 @@
+{"version":3,"file":"onCookieChange.d.ts","sourceRoot":"","sources":["../../../src/utils/onCookieChange.ts"],"names":[],"mappings":"AAAA;;;;GAIG;AAEH,wBAAgB,cAAc,CAC1B,QAAQ,EAAE,CAAC,KAAK,EAAE;IACd,eAAe,EAAE,MAAM,CAAC;IACxB,cAAc,EAAE,MAAM,CAAC;CAC1B,KAAK,IAAI,EACV,QAAQ,SAAO,QAgBlB"}
