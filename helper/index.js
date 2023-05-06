@@ -127,7 +127,7 @@ export const getComposableHeroGallery = async (entryUrl) => {
     ],
   });
 
-  liveEdit && addEditableTags(response[0], "page", true);
+  liveEdit && addEditableTags(response[0], "superhero_landing_page", true);
   return response[0];
 };
 
@@ -145,7 +145,7 @@ export const getSuperheroGalleryRes = async () => {
 export const getDynamicComposableHeroGallery = async () => {
   const querryresponse = await axios
     .get(
-      "https://cdn.contentstack.io/v3/content_types/superhero_landing_page/entries?environment=development&locale=en-us&include[]=modular_blocks.super_heroes_gallery.heroes.character&include[]=modular_blocks.dynamic_hero_list&include[]=modular_blocks.super_heroes_gallery_api_.heroes.character&include_branch=false",
+      "https://cdn.contentstack.io/v3/content_types/superhero_landing_page/entries?environment=development&locale=en-us&include[]=modular_blocks.super_heroes_gallery.heroes&include_branch=false",
       {
         headers: {
           api_key: envConfig.CONTENTSTACK_API_KEY,
