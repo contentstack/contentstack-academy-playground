@@ -64,6 +64,7 @@ type Widget = {
 }
 
 export type Component = {
+  description: any;
   superheroes: any;
   hero_banner: Banner;
   section?: SectionProps;
