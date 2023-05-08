@@ -53,6 +53,7 @@ type Blog = {
 }
 
 export type Posts = {
+  heading: any;
   characters: any;
   modular_blocks: any;
   locale: string;

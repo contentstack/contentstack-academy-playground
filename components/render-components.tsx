@@ -22,7 +22,7 @@ export default function RenderComponents(props: RenderProps) {
       data-locale={locale}
     >
       {pageComponents?.map((component, key: number) => {
-      
+
         if (component.hero_banner) {
           return blogPost ? (
             <BlogBanner
@@ -88,7 +88,12 @@ export default function RenderComponents(props: RenderProps) {
         }
         if (component?.superheroes) {
           return (
-            <Gallery key={`component-${key}`} data={component?.superheroes?.character} heading={undefined} showFilter={false} showDescription={false} />
+            <Gallery key={`component-${key}`}
+              data={component?.superheroes?.character}
+              heading={undefined} showFilter={false}
+              showDescription={false}
+              description={component?.description}
+            />
           )
         }
       })}

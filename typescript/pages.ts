@@ -105,6 +105,7 @@ export type BlogPosts = {
   author: [Author];
   related_post: [Blog];
   locale: string;
+  heading:string;
   featured_image: Image;
   is_archived: boolean;
   characters: any;
