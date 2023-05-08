@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import parse from 'html-react-parser';
 
-const GalleryReact = ({ data, heading, showFilter, showDescription }: { data: any, heading: any, showFilter: boolean, showDescription: boolean }) => {
+const GalleryReact = ({ data, heading, description, showFilter, showDescription }: { data: any, heading: any, showFilter: boolean, showDescription: boolean, description: any }) => {
     const [items, setItems] = useState(data);
     const [active, setActive] = useState(false);
     const powersList: string[] = []
@@ -19,7 +19,7 @@ const GalleryReact = ({ data, heading, showFilter, showDescription }: { data: an
             {
                 heading ?
                     <>
-                        <nav className="navbar navbar-light bg-light shadow-sm mt-2">
+                        <nav className="navbar mt-2">
                             <span className="navbar-brand mb-0 m-auto h1 text-center">
                                 {heading}
                             </span>
@@ -27,6 +27,16 @@ const GalleryReact = ({ data, heading, showFilter, showDescription }: { data: an
                     </>
                     : ''
             }
+            {
+                description ?
+                    <div className='container'>
+                        <p className=" text-center">
+                            {description}
+                        </p>
+                    </div>
+                    : ''
+            }
+
 
             <div className="container">
                 <div className="row mt-5">
@@ -73,24 +83,25 @@ const GalleryReact = ({ data, heading, showFilter, showDescription }: { data: an
                         <div className="container-fluid mt-4">
                             <div className="row justify-content-center">
                                 {items?.map((elem: {
-                                    $: any; id: any; title: any; url: any; image: any; description: any; powers: any; 
-}, index: any) => {
+                                    $: any; id: any; title: any; url: any; image: any; description: any; powers: any;
+                                }, index: any) => {
                                     const { id, title, image, description, powers, url } = elem;
                                     return (
                                         <React.Fragment key={index.toString()}>
-                                            <div className="col-md-6 col-lg-4" id={id}>
-                                                <div className="card mb-5">
-                                                    <a href={url}>
-                                                        <div className="card-body gallery-card-body ">
-                                                            <img
-                                                                className={`img-fluid ${showFilter === false ? 'large-img' : ''}`}
-                                                                src={image?.url}
-                                                                alt={image?.filename}
-                                                                {...image.$?.url as {}}
-                                                            />
-                                                            <div className="px-2">
-                                                                <h5 className="card-title mb-2" {...elem.$?.title as{}}>{elem?.title}</h5>
-                                                                <div className="pb-3" {...elem.$?.powers as{}}>Power: {elem?.powers}</div>
+                                            {/* <div className="col-md-6 col-lg-4" id={id}> */}
+                                            <div className="gallery-featured-blogs col-md-6 col-lg-4">
+                                                <div className="featured-gallery">
+                                                    <a href={url} className="test">
+                                                        <img
+                                                            className={`img-fluid ${showFilter === false ? 'large-img' : ''}`}
+                                                            src={image?.url}
+                                                            alt={image?.filename}
+                                                            {...image.$?.url as {}}
+                                                        /><div className="featured-content">
+                                                            {/* <h3 data-cslp="blog_post.blt7ca504fb3c955cc0.en-us.title" className="">The  modern Cloud Ecosystem</h3> */}
+                                                            <div>
+                                                                <h5 className="card-title mb-2" {...elem.$?.title as {}}>{elem?.title}</h5>
+                                                                <div className="pb-3" {...elem.$?.powers as {}}>Power: {elem?.powers}</div>
                                                                 {
                                                                     showDescription === true ?
                                                                         <div {...elem.$?.description}>{parse(elem?.description.substr(0, 120) + '...')}</div>
@@ -101,6 +112,7 @@ const GalleryReact = ({ data, heading, showFilter, showDescription }: { data: an
                                                     </a>
                                                 </div>
                                             </div>
+                                            {/* </div> */}
                                         </React.Fragment>
                                     );
                                 })}
