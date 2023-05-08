@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { onEntryChange } from '../../contentstack-sdk';
-import { getComposableHero, getComposableHeroHomeWorld } from '../../helper';
+import { getAllComposableHeros, getComposableHeroHomeWorld } from '../../helper';
 import { Page, PostPage, PageUrl, Context } from "../../typescript/pages";
 import GalleryReact from '../../components/gallery'
 
 export default function ComposableHeroes({ page, posts, archivePost, pageUrl }: { page: Page, posts: PostPage, archivePost: PostPage, pageUrl: PageUrl }) {
-
   return (
     <>
-      <GalleryReact data={posts} heading={undefined} showFilter={false} showDescription />
+      <GalleryReact data={posts} heading={page?.heading} description={page?.description} showFilter={false} showDescription />
     </>
   );
 }
 
 export async function getServerSideProps(context: Context) {
   try {
-    const page = await getComposableHero(context.resolvedUrl);
+    const page = await getAllComposableHeros(context.resolvedUrl);
     const archivePost = [] as any;
     const posts = [] as any;
 

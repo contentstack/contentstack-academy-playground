@@ -80,7 +80,7 @@ export const getBlogPostRes = async (entryUrl) => {
   return response[0];
 };
 
-export const getComposableHero = async (entryUrl) => {
+export const getAllComposableHeros = async (entryUrl) => {
   const response = await Stack.getEntryByUrl({
     contentTypeUid: "superhero_gallery_page",
     entryUrl,
@@ -127,7 +127,7 @@ export const getComposableHeroGallery = async (entryUrl) => {
     ],
   });
 
-  liveEdit && addEditableTags(response[0], "superhero_landing_page", true);
+  liveEdit && addEditableTags(response[0], "page", true);
   return response[0];
 };
 
@@ -140,32 +140,4 @@ export const getSuperheroGalleryRes = async () => {
   liveEdit &&
     response[0].forEach((entry) => addEditableTags(entry, "character", true));
   return response;
-};
-
-export const getDynamicComposableHeroGallery = async () => {
-  const querryresponse = await axios
-    .get(
-      "https://cdn.contentstack.io/v3/content_types/superhero_landing_page/entries?environment=development&locale=en-us&include[]=modular_blocks.super_heroes_gallery.heroes&include_branch=false",
-      {
-        headers: {
-          api_key: envConfig.CONTENTSTACK_API_KEY,
-          access_token: envConfig.CONTENTSTACK_DELIVERY_TOKEN,
-        },
-      }
-    )
-    .then(async (response) => {
-      return response?.data?.entries;
-    })
-    .catch((error) => error);
-  return querryresponse;
-};
-
-export const getSuperGallery = async (entryUrl) => {
-  const response = await Stack.getEntryByUrl({
-    contentTypeUid: "superhero_gallery_page",
-    entryUrl,
-    referenceFieldPath: ["characters"],
-  });
-  liveEdit && addEditableTags(response[0], "page", true);
-  return response[0];
 };
