@@ -1,30 +1,48 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { onEntryChange } from '../../contentstack-sdk';
 import parse from 'html-react-parser';
 import { getComposableHeroSingleRes } from '../../helper';
 import { Page, SuperHeroPosts, PageUrl } from "../../typescript/pages";
 
 export default function SuperHerosPost({ superHeroPost, page, pageUrl }: { superHeroPost: SuperHeroPosts, page: Page, pageUrl: PageUrl }) {
 
-  const postData = superHeroPost
+  const [getPost, setPost] = useState(superHeroPost);
+  async function fetchData() {
+    try {
+      const entryRes = await getComposableHeroSingleRes(pageUrl);
+      if (!entryRes) throw new Error('Status: ' + 404);
+      setPost(entryRes);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
+  useEffect(() => {
+    onEntryChange(() => fetchData());
+  }, []);
+
+  const postData = getPost
   return (
     <>
       <div className='container superHero-detail-container'>
         <div className='row'>
           <div className='col-md-12 col-lg-8'>
-
-            <img
-              className='img-fluid'
-              src={postData?.image?.url + '?height=800'}
-              alt={postData?.image?.filename}
-              {...postData?.image.$?.url as {}}
-            />
+            {
+              postData?.image?.url ?
+                <img
+                  className='img-fluid'
+                  src={postData?.image?.url + '?height=800'}
+                  alt={postData?.image?.filename}
+                  {...postData?.image.$?.url as {}}
+                />
+                : ''
+            }
           </div>
           <div className='col-md-12 col-lg-4 mt-5 ps-md-5'>
             <div className='row'>
               <div className='col-12'>
-                <h2 className='mb-3' {...postData.$?.title as {}}>{postData?.title}</h2>
-                <p {...postData.$?.description as {}}>{parse(postData?.description)}</p>
+                {postData?.title ? <h2 className='mb-3' {...postData.$?.title as {}}>{postData?.title}</h2> : ''}
+                {postData?.description ? <p {...postData.$?.description as {}}>{parse(postData?.description)}</p> : ''}
               </div>
               <div className='col-12'>
                 {
@@ -49,7 +67,7 @@ export default function SuperHerosPost({ superHeroPost, page, pageUrl }: { super
                 }
                 {postData?.contact_info?.email ? <p {...postData?.contact_info.$?.email}><strong>Email :</strong> {postData?.contact_info?.email}</p> : ''}
                 {postData?.contact_info?.phone ? <p {...postData?.contact_info.$?.phone}><strong>Phone :</strong> {postData?.contact_info?.phone}</p> : ''}
-                {postData?.powers[0] ? <p {...postData.$?.powers as{}}><strong>Power :</strong> {postData?.powers}</p> : ''}
+                {postData?.powers ? <p {...postData.$?.powers as {}}><strong>Power :</strong> {postData?.powers}</p> : ''}
               </div>
             </div>
           </div>
