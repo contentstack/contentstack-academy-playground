@@ -58,7 +58,7 @@ const GalleryReact = ({ data, heading, description, showFilter, showDescription 
                                         value='flexRadioDefault'
                                         defaultChecked
                                     />
-                                    <label className="form-check-label" htmlFor="flexRadioDefault2">
+                                    <label className="form-check-label">
                                         All
                                     </label>
                                 </div>
@@ -69,7 +69,7 @@ const GalleryReact = ({ data, heading, description, showFilter, showDescription 
                                                 id="flexRadioDefault2"
                                                 onClick={() => filterItem(dataList)}
                                                 value={dataList} />
-                                            <label className="form-check-label" htmlFor="flexRadioDefault2">
+                                            <label className="form-check-label">
                                                 {dataList}
                                             </label>
                                         </div>
@@ -92,12 +92,17 @@ const GalleryReact = ({ data, heading, description, showFilter, showDescription 
                                             <div className="gallery-featured-blogs col-md-6 col-lg-4">
                                                 <div className="featured-gallery">
                                                     <a href={url} className="test">
-                                                        <img
-                                                            className={`img-fluid ${showFilter === false ? 'large-img' : ''}`}
-                                                            src={image?.url}
-                                                            alt={image?.filename}
-                                                            {...image.$?.url as {}}
-                                                        /><div className="featured-content">
+                                                        {
+                                                            image?.url ?
+
+                                                                <img
+                                                                    className={`img-fluid ${showFilter === false ? 'large-img' : ''}`}
+                                                                    src={image?.url}
+                                                                    alt={image?.filename}
+                                                                    {...image.$?.url as {}}
+                                                                />
+                                                                : ''
+                                                        }<div className="featured-content">
                                                             {/* <h3 data-cslp="blog_post.blt7ca504fb3c955cc0.en-us.title" className="">The  modern Cloud Ecosystem</h3> */}
                                                             <div>
                                                                 <h5 className="card-title mb-2" {...elem.$?.title as {}}>{elem?.title}</h5>
