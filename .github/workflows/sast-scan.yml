@@ -3,9 +3,9 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
-  security:
+  security-sast:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Horusec Scan
-        run: docker run -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/src horuszup/horusec-cli:latest horusec start -p /src -P $(pwd)
+      - name: Semgrep Scan
+        run: docker run -v /var/run/docker.sock:/var/run/docker.sock -v "${PWD}:/src" returntocorp/semgrep semgrep scan --config auto
