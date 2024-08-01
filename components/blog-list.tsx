@@ -37,7 +37,7 @@ function BlogList({ bloglist }: { bloglist: BloglistProps }) {
   return (
     <div className='blog-list'>
       {bloglist.featured_image && (
-        <Link href={bloglist.url}>
+        <Link legacyBehavior href={bloglist.url}>
           <a>
             <img
               className='blog-list-img'
@@ -50,7 +50,7 @@ function BlogList({ bloglist }: { bloglist: BloglistProps }) {
       )}
       <div className='blog-content'>
         {bloglist.title && (
-          <Link href={bloglist.url}>
+          <Link legacyBehavior href={bloglist.url}>
             <a>
               <h3 {...bloglist.$?.title}>{bloglist.title}</h3>
             </a>
@@ -67,7 +67,7 @@ function BlogList({ bloglist }: { bloglist: BloglistProps }) {
         </p>
         <div {...bloglist.$?.body as {}}>{parse(body)}</div>
         {bloglist.url ? (
-          <Link href={bloglist.url}>
+          <Link legacyBehavior href={bloglist.url}>
             <a>
               <span>{'Read more -->'}</span>
             </a>
