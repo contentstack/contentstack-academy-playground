@@ -1,16 +1,15 @@
 import React from 'react';
-
-import Section from './section';
-import HeroBanner from './hero-banner';
-import BlogBanner from './blog-banner';
-import CardSection from './card-section';
-import TeamSection from './team-section';
-import BlogSection from './blog-section';
-import SectionBucket from './section-bucket';
-import AboutSectionBucket from './about-section-bucket';
-import SectionWithHtmlCode from './section-with-html-code';
-import Gallery from './gallery';
 import { RenderProps } from "../typescript/component";
+import BlogBanner from './blog-banner';
+import HeroBanner from './hero-banner';
+import Section from './section';
+import AboutSectionBucket from './about-section-bucket';
+import SectionBucket from './section-bucket';
+import BlogSection from './blog-section';
+import CardSection from './card-section';
+import SectionWithHtmlCode from './section-with-html-code';
+import TeamSection from './team-section';
+import GalleryReact from './gallery';
 
 export default function RenderComponents(props: RenderProps) {
   const { pageComponents, blogPost, entryUid, contentTypeUid, locale } = props;
@@ -88,7 +87,7 @@ export default function RenderComponents(props: RenderProps) {
         }
         if (component?.superheroes) {
           return (
-            <Gallery key={`component-${key}`}
+            <GalleryReact key={`component-${key}`}
               data={component?.superheroes?.character}
               heading={undefined} showFilter={false}
               showDescription={false}

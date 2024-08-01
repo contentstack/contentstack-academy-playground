@@ -10,6 +10,8 @@ export type Action = {
   }
 
 export type Image = {
+    height: any;
+    width: any;
     filename: string;
     url: string;
     $: AdditionalParam;
