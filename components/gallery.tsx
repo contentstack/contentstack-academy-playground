@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import parse from 'html-react-parser';
 
 const GalleryReact = ({ data, heading, description, showFilter, showDescription }: { data: any, heading: any, showFilter: boolean, showDescription: boolean, description: any }) => {
@@ -13,6 +13,13 @@ const GalleryReact = ({ data, heading, description, showFilter, showDescription 
         setItems(updateItems);
         setActive(true);
     };
+
+    useEffect(() => {
+        setItems(data);
+    }
+        , [data]);
+
+
 
     return (
         <>
