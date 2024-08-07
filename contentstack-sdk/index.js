@@ -17,6 +17,10 @@ const Stack = contentstack.Stack({
   },
 });
 
+if (process.env.CONTENTSTACK_API_HOST) {
+  Stack.setHost(process.env.CONTENTSTACK_API_HOST);
+}
+
 ContentstackLivePreview.init({
   stackSdk: Stack,
   stackDetails: {
