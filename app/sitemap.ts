@@ -12,7 +12,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const allPages = pages.map((page) => `${baseUrl}${page.url}`);
     const allPosts = posts.map((post) => `${baseUrl}${post.url}`);
     const siteMapList = [...allPages, ...allPosts].sort();
-
     return siteMapList.map((url) => {
         return {
             url: url,

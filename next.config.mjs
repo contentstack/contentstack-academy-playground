@@ -10,6 +10,7 @@ const nextConfig = {
         CONTENTSTACK_PREVIEW_HOST: process.env.CONTENTSTACK_PREVIEW_HOST, // live-preview host
         CONTENTSTACK_PREVIEW_TOKEN: process.env.CONTENTSTACK_PREVIEW_TOKEN, // live-preview token
         CONTENTSTACK_LIVE_EDIT_TAGS: process.env.CONTENTSTACK_LIVE_EDIT_TAGS,
+        CONTENTSTACK_API_HOST: process.env.CONTENTSTACK_API_HOST,
     }
 };
 
