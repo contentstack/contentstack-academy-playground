@@ -1,17 +1,27 @@
+'use client'
+
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import {  usePathname } from 'next/navigation';
 import parse from 'html-react-parser';
-import Tooltip from './tool-tip';
+// import Tooltip from './tool-tip';
 import { onEntryChange } from '../contentstack-sdk';
-import { getHeaderRes } from '../helper';
+import { getAllEntries, getHeaderRes } from '../helper';
 import Skeleton from 'react-loading-skeleton';
 import { HeaderProps, Entry, NavLinks } from "../typescript/layout";
 
-export default function Header({ header, entries }: {header: HeaderProps, entries: Entry}) {
-
-  const router = useRouter();
+export default function Header() {
+  const [header, setHeaderProp] = useState<HeaderProps | undefined>(undefined);
+  const [entries, setEntries] = useState<Entry | undefined>(undefined);
+  const pathname = usePathname();
   const [getHeader, setHeader] = useState(header);
+
+  const fetchHeaderAndEntries = async () => {
+    const headerRes = await getHeaderRes();
+    const entriesRes = await getAllEntries();
+    setHeaderProp(headerRes);
+    setEntries(entriesRes);
+  }
 
   function buildNavigation(ent: Entry, hd: HeaderProps) {
     let newHeader={...hd};
@@ -47,6 +57,10 @@ export default function Header({ header, entries }: {header: HeaderProps, entrie
   }
 
   useEffect(() => {
+    fetchHeaderAndEntries();
+  }, []);
+
+  useEffect(() => {
     if (header && entries) {
       onEntryChange(() => fetchData());
     }
@@ -69,7 +83,7 @@ export default function Header({ header, entries }: {header: HeaderProps, entrie
       <div className='max-width header-div'>
         <div className='wrapper-logo'>
           {headerData ? (
-            <Link href='/'>
+            <Link legacyBehavior href='/'>
               <a className='logo-tag' title='Contentstack'>
                 <img
                   className='logo'
@@ -93,14 +107,14 @@ export default function Header({ header, entries }: {header: HeaderProps, entrie
             {headerData ? (
               headerData.navigation_menu.map((list) => {
                 const className =
-                  router.asPath === list.page_reference[0].url ? 'active' : '';
+                  pathname === list.page_reference[0].url ? 'active' : '';
                 return (
                   <li
                     key={list.label}
                     className='nav-li'
                     {...list.page_reference[0].$?.url as {}}
                   >
-                    <Link href={list.page_reference[0].url}>
+                    <Link legacyBehavior href={list.page_reference[0].url}>
                       <a className={className}>{list.label}</a>
                     </Link>
                   </li>
