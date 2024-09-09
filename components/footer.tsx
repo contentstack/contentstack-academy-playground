@@ -1,12 +1,17 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import parse from 'html-react-parser';
 import { onEntryChange } from '../contentstack-sdk';
-import { getFooterRes } from '../helper';
+import { getAllEntries, getFooterRes } from '../helper';
 import Skeleton from 'react-loading-skeleton';
 import { FooterProps, Entry, Links } from "../typescript/layout";
 
-export default function Footer({ footer, entries }: {footer: FooterProps, entries: Entry}) {
+export default function Footer() {
+
+  const [footer, setFooterProp] = useState<FooterProps | undefined>(undefined);
+  const [entries, setEntries] = useState<Entry | undefined>(undefined);
 
   const [getFooter, setFooter] = useState(footer);
   
@@ -29,6 +34,13 @@ export default function Footer({ footer, entries }: {footer: FooterProps, entrie
     return newFooter;
   }
 
+  const fetchFooterAndEntries = async () => {
+    const footerRes = await getFooterRes();
+    const entriesRes = await getAllEntries();
+    setFooterProp(footerRes);
+    setEntries(entriesRes);
+  }
+
   async function fetchData() {
     try {
       if (footer && entries) {
@@ -42,6 +54,10 @@ export default function Footer({ footer, entries }: {footer: FooterProps, entrie
   }
 
   useEffect(() => {
+    fetchFooterAndEntries();
+  }, []);
+
+  useEffect(() => {
     onEntryChange(() => fetchData());
   }, [footer]);
 
@@ -52,13 +68,13 @@ export default function Footer({ footer, entries }: {footer: FooterProps, entrie
       <div className='max-width footer-div'>
         <div className='col-quarter'>
           {footerData && footerData.logo ? (
-            <Link href='/'>
+            <Link legacyBehavior href='/'>
               <a className='logo-tag'>
                 <img
                   src={footerData.logo.url}
                   alt={footerData.title}
                   title={footerData.title}
-                  {...footer.logo.$?.url as {}}
+                  {...(footer?.logo?.$?.url as {})}
                   className='logo footer-logo'
                 />
               </a>
@@ -111,7 +127,7 @@ export default function Footer({ footer, entries }: {footer: FooterProps, entrie
         </div>
       </div>
       {footerData && typeof footerData.copyright === 'string' ? (
-        <div className='copyright' {...footer.$?.copyright as {}}>
+        <div className='copyright' {...footer?.$?.copyright as {}}>
           {parse(footerData.copyright)}
         </div>
       ) : (
