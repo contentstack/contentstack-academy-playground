@@ -9,11 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@contentstack/live-preview-utils": "^2.0.3",
+    "@contentstack/live-preview-utils": "^2.0.4",
     "contentstack": "^3.20.1",
     "html-react-parser": "^5.1.12",
     "moment": "^2.30.1",
-    "next": "14.1.1",
+    "next": "^14.2.10",
     "react": "^18",
     "react-dom": "^18",
     "react-loading-skeleton": "^3.4.0"
