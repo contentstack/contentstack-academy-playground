@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React from 'react';
 import parse from 'html-react-parser';
 import { Action,Image } from '../typescript/action';

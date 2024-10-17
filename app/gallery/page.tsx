@@ -1,14 +1,12 @@
-'use client';
-
 import GalleryReact from '@/components/gallery';
 import HeroBanner from '@/components/hero-banner';
-import { onEntryChange } from '@/contentstack-sdk';
-import { getComposableHeroGallery, getSuperheroGalleryRes, metaData } from '@/helper';
+import { getComposableHeroGallery } from '@/helper';
 import { Banner } from '@/typescript/component';
 import { Posts } from '@/typescript/layout';
-import { PostPage } from '@/typescript/pages';
-import { usePathname } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import { Metadata } from 'next';
+import { headers } from 'next/headers';
+import { setMetaData } from '@/utils/metaData';
+import { setLivePreviewQueryParams } from "@/utils/livePreviewQueryParams";
 
 const renderTemplateSection = (switchData: any[], modules: {
     hero_banner: Banner;
@@ -40,27 +38,18 @@ const renderTemplateSection = (switchData: any[], modules: {
     }
 }
 
-export default function SuperHerosGallery() {
-    const entryUrl = usePathname();
-    const [gallery, setGallery] = useState<Posts | undefined>();
+export const metadata: Metadata = {}
 
-    async function fetchData() {
-        try {
-            const galleryRes = await getComposableHeroGallery(entryUrl);
-            if (!galleryRes) throw new Error('Status code 404');
-            setGallery(galleryRes);
-        } catch (error) {
-            console.error(error);
-        }
-    }
+export default async function SuperHerosGallery({searchParams}: {searchParams: URLSearchParams}) {
+    setLivePreviewQueryParams(searchParams);
+    const headerList = headers();
+    const pathname = headerList.get("x-current-path");
+    const gallery: Posts | undefined = await getComposableHeroGallery(pathname);
 
-    useEffect(() => {
-        onEntryChange(() => fetchData());
-    }, []);
+    setMetaData(metadata, gallery);
 
     return (
         <>
-            {gallery?.seo && metaData(gallery.seo)}
             <div>
                 {
                     gallery?.modular_blocks

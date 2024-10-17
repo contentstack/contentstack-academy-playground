@@ -48,6 +48,9 @@ type PageProps = {
 
 type Seo = {
   enable_search_indexing: boolean
+  meta_title?: string,
+  meta_description?: string,
+  keywords?: string
 }
 
 type Blog = {
@@ -119,6 +122,7 @@ export type SuperHeroPosts = {
   [x: string]: any;
   title: string;
   date: string;
+  description: string;
   body: string;
   author: [Author];
   related_post: [Blog];

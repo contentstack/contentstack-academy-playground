@@ -1,41 +1,30 @@
-'use client';
-
 import RenderComponents from "@/components/render-components";
-import { onEntryChange } from "@/contentstack-sdk";
-import { getPageRes, metaData } from "@/helper";
+import { getPageRes } from "@/helper";
 import { Page } from "@/typescript/pages";
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Metadata } from "next";
+import { headers } from "next/headers";
 import Skeleton from "react-loading-skeleton";
+import { setMetaData } from '@/utils/metaData';
+import { setLivePreviewQueryParams } from "@/utils/livePreviewQueryParams";
 
-export default function Home() {
-  const entryUrl = usePathname();
-
-  const [getEntry, setEntry] = useState<Page>();
-
-  async function fetchData() {
-    try {
-      const entryRes = await getPageRes(entryUrl);
-      if (!entryRes) throw new Error('Status code 404');
-      setEntry(entryRes);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  useEffect(() => {
-    onEntryChange(() => fetchData());
-  }, []);
+export const metadata: Metadata = {}
 
 
-  return getEntry ? (
+export default async function Home({ searchParams }: { searchParams: URLSearchParams }) {
+  setLivePreviewQueryParams(searchParams);
+  const headerList = headers();
+  const pathname = headerList.get("x-current-path");
+  const entry: Page = await getPageRes(pathname);
+
+  setMetaData(metadata, entry);
+
+  return entry ? (
     <>
-      {getEntry.seo && getEntry.seo.enable_search_indexing && metaData(getEntry.seo)}
       <RenderComponents
-        pageComponents={getEntry.page_components}
+        pageComponents={entry.page_components}
         contentTypeUid='page'
-        entryUid={getEntry.uid}
-        locale={getEntry.locale}
+        entryUid={entry.uid}
+        locale={entry.locale}
       />
     </>
   ) : (
