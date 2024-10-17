@@ -1,8 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
-import Link from 'next/link';
-import parse from 'html-react-parser';
-import { getAllEntries, getFooterRes } from '../helper';
-import Skeleton from 'react-loading-skeleton';
+import Link from "next/link";
+import parse from "html-react-parser";
+import { getAllEntries, getFooterRes } from "../helper";
+import Skeleton from "react-loading-skeleton";
 import { FooterProps, Entry, Links } from "../typescript/layout";
 
 export default async function Footer() {
@@ -10,48 +10,27 @@ export default async function Footer() {
   const entries: Entry | undefined = await getAllEntries();
 
   let getFooter = footer;
-  
-  
-  function buildNavigation(ent: Entry, ft: FooterProps) {
-    let newFooter = { ...ft };
-    if (ent.length !== newFooter.navigation.link.length) {
-      ent.forEach((entry) => {
-        const fFound = newFooter?.navigation.link.find(
-          (nlink: Links) => nlink.title === entry.title
-        );
-        if (!fFound) {
-          newFooter.navigation.link?.push({
-            title: entry.title,
-            href: entry.url,
-            $: entry.$,
-          });
-        }
-      });
-    }
-    return newFooter;
-  }
 
   if (footer && entries) {
     const footerRes = await getFooterRes();
-    const newfooter = buildNavigation(entries, footerRes);
-    getFooter = newfooter;
+    getFooter = footerRes;
   }
 
   const footerData = getFooter ? getFooter : undefined;
 
   return (
     <footer>
-      <div className='max-width footer-div'>
-        <div className='col-quarter'>
+      <div className="max-width footer-div">
+        <div className="col-quarter">
           {footerData && footerData.logo ? (
-            <Link legacyBehavior href='/'>
-              <a className='logo-tag'>
+            <Link legacyBehavior href="/">
+              <a className="logo-tag">
                 <img
                   src={footerData.logo.url}
                   alt={footerData.title}
                   title={footerData.title}
                   {...(footer?.logo?.$?.url as {})}
-                  className='logo footer-logo'
+                  className="logo footer-logo"
                 />
               </a>
             </Link>
@@ -59,13 +38,13 @@ export default async function Footer() {
             <Skeleton width={150} />
           )}
         </div>
-        <div className='col-half'>
+        <div className="col-half">
           <nav>
-            <ul className='nav-ul'>
+            <ul className="nav-ul">
               {footerData ? (
                 footerData.navigation.link.map((menu) => (
                   <li
-                    className='footer-nav-li'
+                    className="footer-nav-li"
                     key={menu.title}
                     {...menu.$?.title}
                   >
@@ -78,8 +57,8 @@ export default async function Footer() {
             </ul>
           </nav>
         </div>
-        <div className='col-quarter social-link'>
-          <div className='social-nav'>
+        <div className="col-quarter social-link">
+          <div className="social-nav">
             {footerData ? (
               footerData.social?.social_share.map((social) => (
                 <a
@@ -91,7 +70,7 @@ export default async function Footer() {
                     <img
                       src={social.icon.url}
                       alt={social.link.title}
-                      {...social.icon.$?.url as {}}
+                      {...(social.icon.$?.url as {})}
                     />
                   )}
                 </a>
@@ -102,12 +81,12 @@ export default async function Footer() {
           </div>
         </div>
       </div>
-      {footerData && typeof footerData.copyright === 'string' ? (
-        <div className='copyright' {...footer?.$?.copyright as {}}>
+      {footerData && typeof footerData.copyright === "string" ? (
+        <div className="copyright" {...(footer?.$?.copyright as {})}>
           {parse(footerData.copyright)}
         </div>
       ) : (
-        <div className='copyright'>
+        <div className="copyright">
           <Skeleton width={500} />
         </div>
       )}
