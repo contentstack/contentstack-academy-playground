@@ -1,9 +1,12 @@
+/* eslint-disable @next/next/no-page-custom-font */
+/* eslint-disable @next/next/no-css-tags */
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import Header from "@/components/header";
 
 import 'react-loading-skeleton/dist/skeleton.css';
 import Footer from "@/components/footer";
+import InitializeLivePreviewComponent from "@/components/csr-component-to-initialize-lp";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -64,10 +67,11 @@ export default async function RootLayout({
           rel='stylesheet'
           href="/styles/third-party.css"
         />
-        
+
       </head>
       <body>
         <>
+          <InitializeLivePreviewComponent />
           <Header />
           <main className='mainClass mt-5'>
             <>

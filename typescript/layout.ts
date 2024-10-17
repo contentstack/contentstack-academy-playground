@@ -52,6 +52,13 @@ type Blog = {
   $: AdditionalParam;
 }
 
+type Seo = {
+  enable_search_indexing: boolean
+  meta_title?: string,
+  meta_description?: string,
+  keywords?: string
+}
+
 export type Posts = {
   heading: any;
   characters: any;
@@ -63,7 +70,7 @@ export type Posts = {
   featured_image: {};
   is_archived: boolean;
   related_post: [Blog];
-  seo: {};
+  seo: Seo;
   url:string;
   title: string;
   _owner: {}

@@ -1,9 +1,7 @@
 import * as contentstack from 'contentstack';
 import * as Utils from '@contentstack/utils';
 
-import ContentstackLivePreview from '@contentstack/live-preview-utils';
-
-const Stack = contentstack.Stack({
+export const Stack = contentstack.Stack({
   api_key: process.env.CONTENTSTACK_API_KEY
     ? process.env.CONTENTSTACK_API_KEY
     : process.env.NEXT_PUBLIC_CONTENTSTACK_API_KEY,
@@ -20,23 +18,6 @@ const Stack = contentstack.Stack({
 if (process.env.CONTENTSTACK_API_HOST) {
   Stack.setHost(process.env.CONTENTSTACK_API_HOST);
 }
-
-ContentstackLivePreview.init({
-  stackSdk: Stack,
-  stackDetails: {
-    apiKey: process.env.CONTENTSTACK_API_KEY,
-    environment: process.env.CONTENTSTACK_ENVIRONMENT,
-    branch: process.env.CONTENTSTACK_BRANCH,
-},
-   
-  clientUrlParams: {
-    host: process.env.CONTENTSTACK_APP_HOST,
-  },
-  enable: true,
-  ssr: false,
-});
-
-export const { onEntryChange } = ContentstackLivePreview;
 
 const renderOption = {
   span: (node, next) => next(node.children),
@@ -56,7 +37,6 @@ export default {
       const query = Stack.ContentType(contentTypeUid).Query();
       if (referenceFieldPath) query.includeReference(referenceFieldPath);
       query
-        .includeOwner()
         .toJSON()
         .find()
         .then(
@@ -91,7 +71,7 @@ export default {
     return new Promise((resolve, reject) => {
       const blogQuery = Stack.ContentType(contentTypeUid).Query();
       if (referenceFieldPath) blogQuery.includeReference(referenceFieldPath);
-      blogQuery.includeOwner().toJSON();
+      blogQuery.toJSON();
       const data = blogQuery.where('url', `${entryUrl}`).find();
       data.then(
         (result) => {

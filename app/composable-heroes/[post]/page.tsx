@@ -1,44 +1,35 @@
-'use client';
-
-import React, { useState, useEffect } from 'react';
-import parse from 'html-react-parser';
-import { usePathname } from 'next/navigation';
-import { getComposableHeroSingleRes, metaData } from '@/helper';
+/* eslint-disable @next/next/no-img-element */
+import { getComposableHeroSingleRes } from '@/helper';
 import { SuperHeroPosts } from '@/typescript/pages';
-import { onEntryChange } from '@/contentstack-sdk';
+import { headers } from 'next/headers';
+import { Metadata } from 'next';
+import { PostDescription } from '@/components/parsed-html-post-descitption';
+import { setMetaData } from '@/utils/metaData';
+import { setLivePreviewQueryParams } from "@/utils/livePreviewQueryParams";
 
-export default function SuperHerosPost() {
-    const entryUrl = usePathname();
+export const metadata: Metadata = {}
 
-    const [getPost, setPost] = useState<SuperHeroPosts>();
-    async function fetchData() {
-        try {
-            const entryRes = await getComposableHeroSingleRes(entryUrl);
-            if (!entryRes) throw new Error('Status: ' + 404);
-            setPost(entryRes);
-        } catch (error) {
-            console.error(error);
-        }
-    }
+export default async function SuperHerosPost({searchParams}: {searchParams: URLSearchParams}) {
+    setLivePreviewQueryParams(searchParams);
+    const headerList = headers();
+    const pathname = headerList.get("x-current-path");
+    const post: SuperHeroPosts = await getComposableHeroSingleRes(pathname);
 
-    useEffect(() => {
-        onEntryChange(() => fetchData());
-    }, []);
+    setMetaData(metadata, post);
 
-    const postData = getPost
+
     return (
         <>
-            {getPost?.seo && getPost.seo.enable_search_indexing && metaData(getPost.seo)}
             <div className='container superHero-detail-container'>
                 <div className='row'>
                     <div className='col-md-12 col-lg-8'>
                         {
-                            postData?.image?.url ?
+                            post?.image?.url ?
                                 <img
                                     className='img-fluid'
-                                    src={postData?.image?.url + '?height=800'}
-                                    alt={postData?.image?.filename}
-                                    {...postData?.image.$?.url as {}}
+                                    src={post?.image?.url + '?height=800'}
+                                    alt={post?.image?.filename}
+                                    {...post?.image.$?.url as {}}
                                 />
                                 : ''
                         }
@@ -46,12 +37,12 @@ export default function SuperHerosPost() {
                     <div className='col-md-12 col-lg-4 mt-5 ps-md-5'>
                         <div className='row'>
                             <div className='col-12'>
-                                {postData?.title ? <h2 className='mb-3' {...postData.$?.title as {}}>{postData?.title}</h2> : ''}
-                                {postData?.description ? <p {...postData.$?.description as {}}>{parse(postData?.description)}</p> : ''}
+                                {post?.title ? <h2 className='mb-3' {...post.$?.title as {}}>{post?.title}</h2> : ''}
+                                <PostDescription post={post} />
                             </div>
                             <div className='col-12'>
                                 {
-                                    postData?.home_world?.map((homeWorld: {
+                                    post?.home_world?.map((homeWorld: {
                                         title: string | undefined;
                                         image: { url: string | undefined; $: { url: {}; }; filename: string; };
                                     },
@@ -70,9 +61,9 @@ export default function SuperHerosPost() {
                                         </div>
                                     ))
                                 }
-                                {postData?.contact_info?.email ? <p {...postData?.contact_info.$?.email}><strong>Email :</strong> {postData?.contact_info?.email}</p> : ''}
-                                {postData?.contact_info?.phone ? <p {...postData?.contact_info.$?.phone}><strong>Phone :</strong> {postData?.contact_info?.phone}</p> : ''}
-                                {postData?.powers ? <p {...postData.$?.powers as {}}><strong>Power :</strong> {postData?.powers}</p> : ''}
+                                {post?.contact_info?.email ? <p {...post?.contact_info.$?.email}><strong>Email :</strong> {post?.contact_info?.email}</p> : ''}
+                                {post?.contact_info?.phone ? <p {...post?.contact_info.$?.phone}><strong>Phone :</strong> {post?.contact_info?.phone}</p> : ''}
+                                {post?.powers ? <p {...post.$?.powers as {}}><strong>Power :</strong> {post?.powers}</p> : ''}
                             </div>
                         </div>
                     </div>

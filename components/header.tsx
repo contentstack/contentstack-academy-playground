@@ -1,27 +1,18 @@
-'use client'
-
-import React, { useState, useEffect } from 'react';
+/* eslint-disable @next/next/no-img-element */
 import Link from 'next/link';
-import {  usePathname } from 'next/navigation';
 import parse from 'html-react-parser';
-// import Tooltip from './tool-tip';
-import { onEntryChange } from '../contentstack-sdk';
 import { getAllEntries, getHeaderRes } from '../helper';
 import Skeleton from 'react-loading-skeleton';
 import { HeaderProps, Entry, NavLinks } from "../typescript/layout";
+import { headers } from 'next/headers';
 
-export default function Header() {
-  const [header, setHeaderProp] = useState<HeaderProps | undefined>(undefined);
-  const [entries, setEntries] = useState<Entry | undefined>(undefined);
-  const pathname = usePathname();
-  const [getHeader, setHeader] = useState(header);
+export default async function Header() {
+  const headerList = headers();
+  const pathname = headerList.get("x-current-path");
+  const header: HeaderProps | undefined = await getHeaderRes();
+  const entries: Entry | undefined = await getAllEntries();
 
-  const fetchHeaderAndEntries = async () => {
-    const headerRes = await getHeaderRes();
-    const entriesRes = await getAllEntries();
-    setHeaderProp(headerRes);
-    setEntries(entriesRes);
-  }
+  let getHeader = header;
 
   function buildNavigation(ent: Entry, hd: HeaderProps) {
     let newHeader={...hd};
@@ -44,27 +35,12 @@ export default function Header() {
     return newHeader
   }
 
-  async function fetchData() {
-    try {
-      if (header && entries) {
-      const headerRes = await getHeaderRes();
-      const newHeader = buildNavigation(entries,headerRes)
-      setHeader(newHeader);
-    }
-    } catch (error) {
-      console.error(error);
-    }
+  if (header && entries) {
+    const headerRes = await getHeaderRes();
+    const newHeader = buildNavigation(entries,headerRes)
+    getHeader = newHeader;
   }
 
-  useEffect(() => {
-    fetchHeaderAndEntries();
-  }, []);
-
-  useEffect(() => {
-    if (header && entries) {
-      onEntryChange(() => fetchData());
-    }
-  }, [header]);
   const headerData = getHeader ? getHeader : undefined;
   
   return (

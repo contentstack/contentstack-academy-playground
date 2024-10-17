@@ -1,19 +1,16 @@
-'use client';
-
-import React, { useState, useEffect } from 'react';
+/* eslint-disable @next/next/no-img-element */
 import Link from 'next/link';
 import parse from 'html-react-parser';
-import { onEntryChange } from '../contentstack-sdk';
 import { getAllEntries, getFooterRes } from '../helper';
 import Skeleton from 'react-loading-skeleton';
 import { FooterProps, Entry, Links } from "../typescript/layout";
 
-export default function Footer() {
+export default async function Footer() {
+  const footer: FooterProps | undefined = await getFooterRes();
+  const entries: Entry | undefined = await getAllEntries();
 
-  const [footer, setFooterProp] = useState<FooterProps | undefined>(undefined);
-  const [entries, setEntries] = useState<Entry | undefined>(undefined);
-
-  const [getFooter, setFooter] = useState(footer);
+  let getFooter = footer;
+  
   
   function buildNavigation(ent: Entry, ft: FooterProps) {
     let newFooter = { ...ft };
@@ -34,32 +31,11 @@ export default function Footer() {
     return newFooter;
   }
 
-  const fetchFooterAndEntries = async () => {
+  if (footer && entries) {
     const footerRes = await getFooterRes();
-    const entriesRes = await getAllEntries();
-    setFooterProp(footerRes);
-    setEntries(entriesRes);
+    const newfooter = buildNavigation(entries, footerRes);
+    getFooter = newfooter;
   }
-
-  async function fetchData() {
-    try {
-      if (footer && entries) {
-        const footerRes = await getFooterRes();
-        const newfooter = buildNavigation(entries, footerRes);
-        setFooter(newfooter);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  useEffect(() => {
-    fetchFooterAndEntries();
-  }, []);
-
-  useEffect(() => {
-    onEntryChange(() => fetchData());
-  }, [footer]);
 
   const footerData = getFooter ? getFooter : undefined;
 

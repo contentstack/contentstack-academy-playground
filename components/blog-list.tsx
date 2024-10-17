@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React from 'react';
 import moment from 'moment';
 import parse from 'html-react-parser';

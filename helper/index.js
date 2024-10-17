@@ -147,23 +147,3 @@ export const getSuperheroGalleryRes = async () => {
         response[0].forEach((entry) => addEditableTags(entry, "character", true));
     return response;
 };
-
-export const metaData = (seo) => {
-    const metaArr = [];
-    for (const key in seo) {
-        if (seo.enable_search_indexing) {
-            metaArr.push(
-                <meta
-                    name={
-                        key.includes('meta_')
-                            ? key.split('meta_')[1].toString()
-                            : key.toString()
-                    }
-                    content={seo[key].toString()}
-                    key={key}
-                />
-            );
-        }
-    }
-    return metaArr;
-};
