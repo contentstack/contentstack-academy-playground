@@ -8,6 +8,7 @@ import { usePathname } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
+
 export default function Page() {
     const entryUrl = usePathname();
 
