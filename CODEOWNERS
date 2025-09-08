@@ -1,1 +1,9 @@
-* @contentstack/security-admin
+* @contentstack/tso-academy-pr-reviewers
+
+.github/workflows/sca-scan.yml @contentstack/security-admin
+
+**/.snyk @contentstack/security-admin
+
+.github/workflows/policy-scan.yml @contentstack/security-admin
+
+.github/workflows/issues-jira.yml @contentstack/security-admin
