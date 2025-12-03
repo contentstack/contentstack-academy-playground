@@ -1,7 +1,7 @@
-import React, { useRef, useEffect, MutableRefObject } from 'react';
+import React, { useRef, useEffect, useCallback } from 'react';
 
 type TooltipProps = {
-  children?: JSX.Element|JSX.Element[];
+  children?: React.ReactNode;
   content: string;
   direction: string;
   status: number;
@@ -10,28 +10,44 @@ type TooltipProps = {
 }
 
 const Tooltip = (props: TooltipProps) => {
-  let timeout: any;
-  const toolTipRef = useRef() as MutableRefObject <HTMLDivElement>;
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const toolTipRef = useRef<HTMLDivElement>(null);
 
-  const showTip = () => {
-    timeout = setTimeout(() => {
-      toolTipRef.current.style.display = "block";
+  const showTip = useCallback(() => {
+    timeoutRef.current = setTimeout(() => {
+      if (toolTipRef.current) {
+        toolTipRef.current.style.display = "block";
+      }
     }, props.delay || 400);
-  };
+  }, [props.delay]);
 
-  const hideTip = () => {
-    clearInterval(timeout);
-    toolTipRef.current.style.display = "none";
-  };
+  const hideTip = useCallback(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    if (toolTipRef.current) {
+      toolTipRef.current.style.display = "none";
+    }
+  }, []);
 
   useEffect(() => {
     if (props.dynamic) {
-      props.status !== 0 && (toolTipRef.current.style.display = "block");
-      timeout = setTimeout(() => {
-        toolTipRef.current.style.display = "none";
+      if (props.status !== 0 && toolTipRef.current) {
+        toolTipRef.current.style.display = "block";
+      }
+      timeoutRef.current = setTimeout(() => {
+        if (toolTipRef.current) {
+          toolTipRef.current.style.display = "none";
+        }
       }, props.delay || 400);
     }
-  }, [props.content]);
+    
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [props.content, props.dynamic, props.status, props.delay]);
 
   return (
     <div

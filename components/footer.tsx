@@ -68,16 +68,14 @@ export default function Footer() {
       <div className='max-width footer-div'>
         <div className='col-quarter'>
           {footerData && footerData.logo ? (
-            <Link legacyBehavior href='/'>
-              <a className='logo-tag'>
-                <img
-                  src={footerData.logo.url}
-                  alt={footerData.title}
-                  title={footerData.title}
-                  {...(footer?.logo?.$?.url as {})}
-                  className='logo footer-logo'
-                />
-              </a>
+            <Link href='/' className='logo-tag'>
+              <img
+                src={footerData.logo.url}
+                alt={footerData.title}
+                title={footerData.title}
+                {...(footer?.logo?.$?.url as {})}
+                className='logo footer-logo'
+              />
             </Link>
           ) : (
             <Skeleton width={150} />
