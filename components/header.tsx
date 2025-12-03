@@ -83,16 +83,14 @@ export default function Header() {
       <div className='max-width header-div'>
         <div className='wrapper-logo'>
           {headerData ? (
-            <Link legacyBehavior href='/'>
-              <a className='logo-tag' title='Contentstack'>
-                <img
-                  className='logo'
-                  src={headerData.logo.url}
-                  alt={headerData.title}
-                  title={headerData.title}
-                  {...headerData.logo.$?.url as {}}
-                />
-              </a>
+            <Link href='/' className='logo-tag' title='Contentstack'>
+              <img
+                className='logo'
+                src={headerData.logo.url}
+                alt={headerData.title}
+                title={headerData.title}
+                {...headerData.logo.$?.url as {}}
+              />
             </Link>
           ) : (
             <Skeleton width={150} />
@@ -114,8 +112,8 @@ export default function Header() {
                     className='nav-li'
                     {...list.page_reference[0].$?.url as {}}
                   >
-                    <Link legacyBehavior href={list.page_reference[0].url}>
-                      <a className={className}>{list.label}</a>
+                    <Link href={list.page_reference[0].url} className={className}>
+                      {list.label}
                     </Link>
                   </li>
                 );

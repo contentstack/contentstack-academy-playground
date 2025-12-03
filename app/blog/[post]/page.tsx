@@ -35,7 +35,8 @@ export default function BlogPost() {
         onEntryChange(() => fetchData());
     }, []);
 
-    const { post, banner } = getPost;
+    const { post, banner } = getPost; 
+    
     return (
         <>
             {blogPost?.seo && blogPost.seo.enable_search_indexing && metaData(blogPost.seo)}
