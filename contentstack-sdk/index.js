@@ -112,7 +112,10 @@ export default {
           console.error(error);
           reject(error);
         },
-      );
+      ).catch((err) => {
+          console.error(err);
+          reject(err);
+        });
     });
   },
 };
