@@ -1,9 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
+import Script from "next/script";
 import Header from "@/components/header";
+import Footer from "@/components/footer";
 
 import 'react-loading-skeleton/dist/skeleton.css';
-import Footer from "@/components/footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,24 +20,17 @@ export const viewport: Viewport = {
   width: 'device-width',
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   return (
     <html lang="en">
       <head>
-        <script
-          src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js'
-          integrity='sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM'
-          crossOrigin='anonymous'
-          defer
-        />
         <link rel='preconnect' href='https://fonts.gstatic.com' />
         <link
-          href='https://fonts.googleapis.com/css?family=Inter&amp;display=swap'
+          href='https://fonts.googleapis.com/css?family=Inter&display=swap'
           rel='stylesheet'
         />
         <link
@@ -52,30 +46,22 @@ export default async function RootLayout({
           integrity='sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC'
           crossOrigin='anonymous'
         />
-        <link
-          rel='stylesheet'
-          href="/styles/globals.css"
-        />
-        <link
-          rel='stylesheet'
-          href="/styles/style.css"
-        />
-        <link
-          rel='stylesheet'
-          href="/styles/third-party.css"
-        />
-        
+        <link rel='stylesheet' href="/styles/globals.css" />
+        <link rel='stylesheet' href="/styles/style.css" />
+        <link rel='stylesheet' href="/styles/third-party.css" />
       </head>
-      <body>
-        <>
-          <Header />
-          <main className='mainClass mt-5'>
-            <>
-              {children}
-            </>
-          </main>
-        </>
+      <body className={inter.className}>
+        <Header />
+        <main className='mainClass mt-5'>
+          {children}
+        </main>
         <Footer />
+        <Script
+          src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js'
+          integrity='sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM'
+          crossOrigin='anonymous'
+          strategy="lazyOnload"
+        />
       </body>
     </html>
   );

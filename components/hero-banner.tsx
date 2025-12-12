@@ -57,10 +57,8 @@ export default function HeroBanner(props: BannerProps) {
           ''
         )}
         {banner.call_to_action.title && banner.call_to_action.href ? (
-          <Link legacyBehavior href={banner?.call_to_action.href}>
-            <a className='btn tertiary-btn' {...banner.call_to_action.$?.title}>
-              {banner?.call_to_action.title}
-            </a>
+          <Link href={banner?.call_to_action.href} className='btn tertiary-btn' {...banner.call_to_action.$?.title}>
+            {banner?.call_to_action.title}
           </Link>
         ) : (
           ''
