@@ -10,8 +10,7 @@ import Skeleton from "react-loading-skeleton";
 
 export default function Home() {
   const entryUrl = usePathname();
-
-  const [getEntry, setEntry] = useState<Page>();
+  const [getEntry, setEntry] = useState<Page | undefined>(undefined);
 
   async function fetchData() {
     try {
@@ -27,8 +26,7 @@ export default function Home() {
     onEntryChange(() => fetchData());
   }, []);
 
-
-  return getEntry ? (
+  return getEntry?.page_components ? (
     <>
       {getEntry.seo && getEntry.seo.enable_search_indexing && metaData(getEntry.seo)}
       <RenderComponents
