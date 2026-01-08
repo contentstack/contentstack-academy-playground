@@ -2,6 +2,12 @@
   "name": "contentstack-nextjs-starter-app",
   "version": "0.1.2",
   "private": true,
+  "overrides": {
+    "qs": "6.14.1"
+  },
+  "overrides": {
+  "sharp": "npm:@neostack/empty-package@^1.0.0"
+  },
   "scripts": {
     "dev": "next dev --webpack",
     "build": "next build --webpack",
