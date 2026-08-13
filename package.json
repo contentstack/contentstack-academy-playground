@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@contentstack/live-preview-utils": "4.1.2",
-    "contentstack": "3.22.0",
+    "contentstack": "3.26.3",
     "html-react-parser": "5.2.10",
     "moment": "2.30.1",
     "next": "16.0.10",
